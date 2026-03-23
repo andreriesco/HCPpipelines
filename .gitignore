@@ -14,3 +14,7 @@
 
 # nfs temporaries
 .nfs*
+
+dataset
+
+DiffPreprocPipeline.sh.*

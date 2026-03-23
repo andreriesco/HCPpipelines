@@ -39,9 +39,9 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${HOME}/projects/HCPpipelines_ExampleData" #Location of Subject folders (named by subjectID)
-Subjlist="100307 100610" #Space delimited list of subject IDs
-EnvironmentScript="${HOME}/projects/HCPpipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+StudyFolder="${PWD}/dataset/unprocessed" #Location of Subject folders (named by subjectID)
+Subjlist="102109" #Space delimited list of subject IDs
+EnvironmentScript="${PWD}/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"
@@ -140,6 +140,10 @@ for Subject in $Subjlist ; do
   
   PEdir=1 #Use 1 for Left-Right Phase Encoding, 2 for Anterior-Posterior
 
+  # Use the non-subsampling topup config for datasets with odd slice counts.
+  # The default b02b0.cnf uses subsampling and will fail for odd dim3, but the b02b0_1.cnf config does not use subsampling and will work for odd dim3.
+    TopupConfig="${FSLDIR}/etc/flirtsch/b02b0_1.cnf"
+
   # Gradient distortion correction
   # Set to NONE to skip gradient distortion correction
   # (These files are considered proprietary and therefore not provided as part of the HCP Pipelines -- contact Siemens to obtain)
@@ -158,6 +162,7 @@ for Subject in $Subjlist ; do
       --posData="${PosData}" --negData="${NegData}" \
       --path="${StudyFolder}" --subject="${SubjectID}" \
       --echospacing-seconds="${EchoSpacingSec}" --PEdir="${PEdir}" \
+      --topup-config-file="${TopupConfig}" \
       --gdcoeffs="${Gdcoeffs}" \
       --printcom="$PRINTCOM"
 
