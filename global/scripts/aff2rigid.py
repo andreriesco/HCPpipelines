@@ -2,7 +2,7 @@
 
 import sys
 from sys import argv
-from commands import getoutput
+from subprocess import getoutput
 from numpy import *
 
 def usage():
