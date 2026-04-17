@@ -18,5 +18,6 @@
 dataset
 
 DiffPreprocPipeline.sh.*
+*FreeSurferPipeline.sh.*
 
 .venv

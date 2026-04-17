@@ -70,6 +70,7 @@ if (( ! IsLongitudinal )); then
 	export SUBJECTS_DIR
 	# Use "hidden" bbregister DOF options (--6 (default), --9, or --12 are supported)
 	${FREESURFER_HOME}/bin/bbregister --s "$FreeSurferSubjectID" --mov "$WorkingDirectory"/"$regimg"2T1w_restore_initII.nii.gz --surf white.deformed --init-reg "$FreeSurferSubjectFolder"/"$FreeSurferSubjectID"/mri/transforms/eye.dat --bold --reg "$WorkingDirectory"/EPItoT1w.dat --${dof} --o "$WorkingDirectory"/"$regimg"2T1w.nii.gz
+	#${FREESURFER_HOME}/bin/bbregister --s "$FreeSurferSubjectID" --mov "$WorkingDirectory"/"$regimg"2T1w_restore_initII.nii.gz --surf white.deformed  --bold --reg "$WorkingDirectory"/EPItoT1w.dat --${dof} --o "$WorkingDirectory"/"$regimg"2T1w.nii.gz
 	${FREESURFER_HOME}/bin/tkregister2 --noedit --reg "$WorkingDirectory"/EPItoT1w.dat --mov "$WorkingDirectory"/"$regimg"2T1w_restore_initII.nii.gz --targ "$T1wImage".nii.gz --fslregout "$WorkingDirectory"/diff2str_fs.mat
 	${FSLDIR}/bin/convert_xfm -omat "$WorkingDirectory"/diff2str.mat -concat "$WorkingDirectory"/diff2str_fs.mat "$WorkingDirectory"/"$regimg"2T1w_initII.mat
 	${FSLDIR}/bin/convert_xfm -omat "$WorkingDirectory"/str2diff.mat -inverse "$WorkingDirectory"/diff2str.mat

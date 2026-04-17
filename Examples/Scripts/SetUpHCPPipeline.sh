@@ -6,7 +6,7 @@ SAVEHCPPIPE="${HCPPIPEDIR:-}"
 ## Edit this line: environment variable for location of HCP Pipeline repository
 ## If you leave it blank, and $HCPPIPEDIR already exists in the environment,
 ## that will be used instead (via the SAVEHCPPIPE variable, defined above)
-export HCPPIPEDIR="$HOME/Documents/doutorado/tese/HCPpipelines-5.0.0"
+export HCPPIPEDIR="${PWD}"
 
 # Don't edit this section, it allows sourcing SetUp... without editing it if you set things in advance
 if [[ -z "$HCPPIPEDIR" ]]

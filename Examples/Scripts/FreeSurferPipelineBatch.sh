@@ -43,9 +43,9 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${HOME}/projects/HCPpipelines_ExampleData" #Location of Session folders (named by sessionID) 
-Sessionlist="100307 100610" #Space delimited list of session IDs 
-EnvironmentScript="${HOME}/projects/HCPpipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script 
+StudyFolder="${PWD}/dataset/unprocessed" #Location of Subject folders (named by subjectID)
+Sessionlist="102109" #Space delimited list of subject IDs
+EnvironmentScript="${PWD}/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
     StudyFolder="${command_line_specified_study_folder}"

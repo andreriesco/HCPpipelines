@@ -1,0 +1,12 @@
+services:
+  hcppipeline:
+    build:
+      context: .
+    image: hcppipeline
+    volumes:
+      - .:/work
+    working_dir: /work
+    gpus: all
+    command: ["/bin/bash", "-lc", "exec bash"]
+    stdin_open: true
+    tty: true
