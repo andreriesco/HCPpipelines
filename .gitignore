@@ -15,7 +15,7 @@
 # nfs temporaries
 .nfs*
 
-dataset
+datasets
 
 DiffPreprocPipeline.sh.*
 *FreeSurferPipeline.sh.*

@@ -224,8 +224,11 @@ if (( ! IsLongitudinal )); then
     ${runcmd} ${HCPPIPEDIR_dMRI}/eddy_postproc.sh ${outdir} ${GdCoeffs} ${CombineDataFlag} ${select_flag}
 fi
 
+# No need to copy the structural folder all the time
+StructuralFolder="${PWD}/datasets/HCP/HCPDatasetSubsetS1200ProcessedStructural"
+
 # Establish variables that follow naming conventions
-T1wFolder="${StudyFolder}/${Session}/T1w" #Location of T1w images
+T1wFolder="${StructuralFolder}/${Session}/T1w" #Location of T1w images
 T1wImage="${T1wFolder}/T1w_acpc_dc"
 T1wRestoreImage="${T1wFolder}/T1w_acpc_dc_restore"
 T1wRestoreImageBrain="${T1wFolder}/T1w_acpc_dc_restore_brain"

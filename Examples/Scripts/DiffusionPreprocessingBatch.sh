@@ -39,8 +39,13 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${PWD}/dataset/unprocessed" #Location of Subject folders (named by subjectID)
-Subjlist="102109" #Space delimited list of subject IDs
+StudyFolder="${PWD}/datasets/HCP/HCPDatasetSubsetS1200UnprocessedPrepared_shell_1000" #Location of Subject folders (named by subjectID)
+
+# Check all subject files in Study folder and concatenate subject IDs into a space delimited list
+Subjlist=$(ls ${StudyFolder} | grep "^[0-9]" | sort -d) #Space delimited list of subject IDs
+echo "Subjects found in ${StudyFolder}: ${Subjlist}"
+
+# Subjlist="102109" #Space delimited list of subject IDs
 EnvironmentScript="${PWD}/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
 if [ -n "${command_line_specified_study_folder}" ]; then
@@ -127,8 +132,10 @@ for Subject in $Subjlist ; do
   # avoids having volumes with different SNR features/ residual distortions.
   # [This behavior can be changed via the --combine-data-flag if necessary].
   
-  PosData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_RL.nii.gz"
-  NegData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_LR.nii.gz"
+  #PosData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_RL.nii.gz"
+  #NegData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_LR.nii.gz"
+  PosData="${RawDataDir}/${SubjectID}_3T_DWI_RL.nii.gz"
+  NegData="${RawDataDir}/${SubjectID}_3T_DWI_LR.nii.gz"
   
   # "Effective" Echo Spacing of dMRI image (now specified in seconds for the dMRI processing)
   # EchoSpacing = 1/(BWPPPE * ReconMatrixPE)
