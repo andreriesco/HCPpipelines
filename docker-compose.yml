@@ -2,7 +2,7 @@ services:
   hcppipeline:
     build:
       context: .
-    image: hcppipeline
+    image: andreriescoa/hcppipeline
     volumes:
       - .:/work
     working_dir: /work

@@ -41,10 +41,6 @@ get_batch_options "$@"
 
 StudyFolder="${PWD}/datasets/HCP/HCPDatasetSubsetS1200UnprocessedPrepared_shell_1000" #Location of Subject folders (named by subjectID)
 
-# Check all subject files in Study folder and concatenate subject IDs into a space delimited list
-Subjlist=$(ls ${StudyFolder} | grep "^[0-9]" | sort -d) #Space delimited list of subject IDs
-echo "Subjects found in ${StudyFolder}: ${Subjlist}"
-
 # Subjlist="102109" #Space delimited list of subject IDs
 EnvironmentScript="${PWD}/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 
@@ -54,7 +50,17 @@ fi
 
 if [ -n "${command_line_specified_subj}" ]; then
     Subjlist="${command_line_specified_subj}"
+else
+    # Collect numeric subject IDs that do not yet have a Diffusion output folder.
+    Subjlist=$(for subjdir in "${StudyFolder}"/[0-9]*; do
+        [ -d "${subjdir}" ] || continue
+        if [ ! -d "${subjdir}/Diffusion" ]; then
+            basename "${subjdir}"
+        fi
+    done | sort -d | tr '\n' ' ' | sed 's/[[:space:]]*$//')
 fi
+
+echo "Subjects found in ${StudyFolder}: ${Subjlist}"
 
 # Requirements for this script
 #  installed versions of: FSL, FreeSurfer, Connectome Workbench (wb_command), gradunwarp (HCP version)
