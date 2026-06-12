@@ -225,7 +225,7 @@ if (( ! IsLongitudinal )); then
 fi
 
 # No need to copy the structural folder all the time
-StructuralFolder="${PWD}/datasets/HCP/HCPDatasetSubsetS1200ProcessedStructural"
+StructuralFolder="${PWD}/datasets/HCP/HCPDatasetProcessedStructural"
 
 # Establish variables that follow naming conventions
 T1wFolder="${StructuralFolder}/${Session}/T1w" #Location of T1w images

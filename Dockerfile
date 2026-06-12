@@ -92,3 +92,17 @@ RUN printf '%s\n' '. /opt/conda/etc/profile.d/conda.sh' 'conda activate base' >>
 	&& chown hcp:hcp /home/hcp/.bashrc
 
 USER hcp
+
+# For running the container detached
+# docker compose run --rm -d --name hcp_reduction hcppipeline /bin/bash -lc "./DiffusionPreprocessingReductions.sh"
+
+# For checking the logs
+# docker logs -f hcp_reduction
+
+# For stopping the container
+# docker stop hcp_reduction
+
+# docker compose down --remove-orphans
+
+# For running the container interactively
+# docker compose run --rm --name hcp_reduction hcppipeline

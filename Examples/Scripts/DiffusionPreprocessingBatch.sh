@@ -39,7 +39,14 @@ get_batch_options() {
 
 get_batch_options "$@"
 
-StudyFolder="${PWD}/datasets/HCP/HCPDatasetSubsetS1200UnprocessedPrepared_shell_1000" #Location of Subject folders (named by subjectID)
+DenoiseAlgo='mppca'
+if [[ "$DenoiseAlgo" == "None" ]]; then
+    DenoisedData='False'
+else
+    DenoisedData='True'
+fi
+
+StudyFolder="${PWD}/datasets/HCP/HCPDatasetUnprocessedPrepared_shell_1000/denoise_${DenoiseAlgo}" #Location of Subject folders (named by subjectID)
 
 # Subjlist="102109" #Space delimited list of subject IDs
 EnvironmentScript="${PWD}/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
@@ -50,14 +57,6 @@ fi
 
 if [ -n "${command_line_specified_subj}" ]; then
     Subjlist="${command_line_specified_subj}"
-else
-    # Collect numeric subject IDs that do not yet have a Diffusion output folder.
-    Subjlist=$(for subjdir in "${StudyFolder}"/[0-9]*; do
-        [ -d "${subjdir}" ] || continue
-        if [ ! -d "${subjdir}/Diffusion" ]; then
-            basename "${subjdir}"
-        fi
-    done | sort -d | tr '\n' ' ' | sed 's/[[:space:]]*$//')
 fi
 
 echo "Subjects found in ${StudyFolder}: ${Subjlist}"
@@ -140,8 +139,13 @@ for Subject in $Subjlist ; do
   
   #PosData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_RL.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_RL.nii.gz"
   #NegData="${RawDataDir}/${SubjectID}_3T_DWI_dir95_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir96_LR.nii.gz@${RawDataDir}/${SubjectID}_3T_DWI_dir97_LR.nii.gz"
-  PosData="${RawDataDir}/${SubjectID}_3T_DWI_RL.nii.gz"
-  NegData="${RawDataDir}/${SubjectID}_3T_DWI_LR.nii.gz"
+  if [[ "$DenoisedData" == "True" || "$DenoisedData" == "TRUE" ]]; then
+    PosData="${RawDataDir}/${SubjectID}_3T_DWI_RL_denoised.nii.gz"
+    NegData="${RawDataDir}/${SubjectID}_3T_DWI_LR_denoised.nii.gz"
+  else
+    PosData="${RawDataDir}/${SubjectID}_3T_DWI_RL.nii.gz"
+    NegData="${RawDataDir}/${SubjectID}_3T_DWI_LR.nii.gz"
+  fi
   
   # "Effective" Echo Spacing of dMRI image (now specified in seconds for the dMRI processing)
   # EchoSpacing = 1/(BWPPPE * ReconMatrixPE)
