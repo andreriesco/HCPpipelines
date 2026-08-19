@@ -84,11 +84,23 @@ RUN /opt/conda/bin/conda install -y -n base --override-channels -c conda-forge -
 	&& /opt/conda/bin/python setup.py install \
 	&& /opt/conda/bin/conda clean -afy
 
+COPY requirements.txt /tmp/requirements.txt
+
+RUN /opt/conda/bin/python -m venv /opt/venv \
+	&& /opt/venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt
+
+ENV PATH="/opt/venv/bin:${PATH}"
+
 RUN useradd --create-home --shell /bin/bash hcp
 
 RUN chown -R hcp:hcp /opt/conda
 
-RUN printf '%s\n' '. /opt/conda/etc/profile.d/conda.sh' 'conda activate base' >> /home/hcp/.bashrc \
+# Activate conda base + venv for login shells (bash -l) too. profile.d scripts
+# are sourced in alphabetical order, so the zz- prefix ensures this runs after
+# fsl.sh/freesurfer.sh and wins the PATH ordering (FSL ships its own python3).
+RUN printf '%s\n' '. /opt/conda/etc/profile.d/conda.sh' 'conda activate base' 'source /opt/venv/bin/activate' > /etc/profile.d/zz-venv.sh
+
+RUN printf '%s\n' '. /opt/conda/etc/profile.d/conda.sh' 'conda activate base' 'source /opt/venv/bin/activate' >> /home/hcp/.bashrc \
 	&& chown hcp:hcp /home/hcp/.bashrc
 
 USER hcp

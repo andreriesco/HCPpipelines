@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAX_PARALLEL=4
+MAX_PARALLEL=3
 
 run_preprocessing() {
     local dir="$1"

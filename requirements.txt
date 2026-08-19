@@ -1,0 +1,12 @@
+nibabel
+numpy
+dipy
+matplotlib
+pandas
+openpyxl
+opencv-python
+imutils
+scikit-learn
+scikit-image
+fury
+antspyx
